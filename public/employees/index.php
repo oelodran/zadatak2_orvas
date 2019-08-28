@@ -8,7 +8,9 @@
 
 require_once ('../../private/initialize.php');
 
-$sql = "SELECT * FROM employees";
+$sql = "SELECT employees.*, privileges.privilege_name FROM ";
+$sql .= "((employees INNER JOIN employee_privileges ON employees.id = employee_privileges.employee_id) ";
+$sql .= "INNER JOIN privileges ON privileges.id = employee_privileges.privilege_id)";
 $result = $database->query($sql);
 
 ?>
@@ -37,10 +39,10 @@ $result = $database->query($sql);
             background-color: #dddddd;
         }
     </style>
-    <title>CRUD Customers</title>
+    <title>CRUD Employees</title>
 </head>
 <body>
-<h1 style="text-align: center">Customers</h1>
+<h1 style="text-align: center">Employees</h1>
 <table border="solid">
     <tr>
         <th>Company</th>
@@ -51,7 +53,6 @@ $result = $database->query($sql);
         <th>Business Phone</th>
         <th>Home Phone</th>
         <th>Mobile Phone</th>
-        <th>Last Name</th>
         <th>Fax Number</th>
         <th>Address</th>
         <th>City</th>
@@ -61,30 +62,32 @@ $result = $database->query($sql);
         <th>Web Page</th>
         <th>Notes</th>
         <th>Attachments</th>
+        <th>Privilege Name</th>
         <th>&nbsp;</th>
         <th>&nbsp;</th>
     </tr>
-    <?php while ($customers = $result->fetch_assoc()) { ?>
+    <?php while ($employees = $result->fetch_assoc()) { ?>
         <tr>
-            <td><?php echo $customers['company']?></td>
-            <td><?php echo $customers['last_name']?></td>
-            <td><?php echo $customers['first_name']?></td>
-            <td><?php echo $customers['email_address']?></td>
-            <td><?php echo $customers['job_title']?></td>
-            <td><?php echo $customers['business_phone']?></td>
-            <td><?php echo $customers['home_phone']?></td>
-            <td><?php echo $customers['mobile_phone']?></td>
-            <td><?php echo $customers['fax_number']?></td>
-            <td><?php echo $customers['address']?></td>
-            <td><?php echo $customers['city']?></td>
-            <td><?php echo $customers['state_province']?></td>
-            <td><?php echo $customers['zip_postal_code']?></td>
-            <td><?php echo $customers['country_region']?></td>
-            <td><?php echo $customers['web_page']?></td>
-            <td><?php echo $customers['notes']?></td>
-            <td><?php echo $customers['attachments']?></td>
-            <td><a href="<?php echo url_for('/customers/edit.php?customer_id=' . h(u($customers['id'])));?>">Update</a></td>
-            <td><a href="<?php echo url_for('/customers/show.php?customer_id=' . h(u($customers['id'])));?>">Show</a></td>
+            <td><?php echo $employees['company']?></td>
+            <td><?php echo $employees['last_name']?></td>
+            <td><?php echo $employees['first_name']?></td>
+            <td><?php echo $employees['email_address']?></td>
+            <td><?php echo $employees['job_title']?></td>
+            <td><?php echo $employees['business_phone']?></td>
+            <td><?php echo $employees['home_phone']?></td>
+            <td><?php echo $employees['mobile_phone']?></td>
+            <td><?php echo $employees['fax_number']?></td>
+            <td><?php echo $employees['address']?></td>
+            <td><?php echo $employees['city']?></td>
+            <td><?php echo $employees['state_province']?></td>
+            <td><?php echo $employees['zip_postal_code']?></td>
+            <td><?php echo $employees['country_region']?></td>
+            <td><?php echo $employees['web_page']?></td>
+            <td><?php echo $employees['notes']?></td>
+            <td><?php echo $employees['attachments']?></td>
+            <td><?php echo $employees['privilege_name']?></td>
+            <td><a href="<?php echo url_for('/employees/edit.php?employees_id=' . h(u($employees['id'])));?>">Update</a></td>
+            <td><a href="<?php echo url_for('/employees/show.php?employees_id=' . h(u($employees['id'])));?>">Show</a></td>
         </tr>
     <?php } ?>
 </table>
